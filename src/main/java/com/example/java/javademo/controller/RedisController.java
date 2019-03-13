@@ -229,9 +229,11 @@ public class RedisController {
         // 获取所有的value
         List myhash1 = redisTemplate.opsForHash().values("myhash");
         System.out.println("###获取所有的value###");
+        System.out.println(myhash1.size());
         myhash1.forEach(obj-> System.out.println(obj));
 
     }
+
 
 
 

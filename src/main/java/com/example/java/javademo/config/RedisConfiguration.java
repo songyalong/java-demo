@@ -35,10 +35,11 @@ public class RedisConfiguration {
         jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
 
         /*设置key, value的序列化规则*/
+        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
         redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-        redisTemplate.setHashValueSerializer(fastJson2JsonRedisSerializer());
+        redisTemplate.setKeySerializer(stringRedisSerializer);
+        redisTemplate.setHashKeySerializer(stringRedisSerializer);
+        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }
