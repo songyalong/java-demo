@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -234,7 +235,13 @@ public class RedisController {
 
     }
 
-
+    /**
+     * 测试分布式锁
+     */
+    @GetMapping(value = "/distributed/")
+    public void testDistributed(){
+        Executors.newFixedThreadPool()
+    }
 
 
 
