@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * @Author: songyalong
@@ -240,8 +239,48 @@ public class RedisController {
      */
     @GetMapping(value = "/distributed/")
     public void testDistributed(){
-        Executors.newFixedThreadPool()
+        int threadCount = 10;
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
+
+        for (int i = 0; i < threadCount; i++) {
+            executorService.execute(new TestExecute());
+        }
+        ExecutorService executorService2 = Executors.newCachedThreadPool();
+        for (int i = 0; i < threadCount; i++) {
+            executorService2.execute(new TestExecute());
+        }
+
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
+        for (int i = 0; i < threadCount; i++) {
+            scheduledExecutorService.schedule(new TestExecute(), 2, TimeUnit.SECONDS);
+        }
+
+        ExecutorService executorService3 = Executors.newSingleThreadExecutor();
+        for (int i = 0; i < threadCount; i++) {
+            executorService3.execute(new TestExecute());
+        }
+
+
     }
+
+    class TestExecute implements Runnable{
+        @Override
+        public void run() {
+            System.out.println(Thread.currentThread().getName() + "正在执行");
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

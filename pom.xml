@@ -149,6 +149,26 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.0.2</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+						<manifestEntries>
+							<Premain-Class>
+								com.example.java.javademo.javaagent.AgentMain
+							</Premain-Class>
+							<Can-Redefine-Classes>
+								true
+							</Can-Redefine-Classes>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
