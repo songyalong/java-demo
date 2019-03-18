@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
  * 通过Javassist创建类
  */
 public class CreateClass {
-    public static void main(String[] args){
+    public static void main(String[] args) throws IllegalAccessException, InstantiationException {
         ClassPool classPool  = ClassPool.getDefault();
         CtClass ctClass = classPool.makeClass("com.example.java.javademo.javaagent.javassist.Cclass");
         // 添加属性和方法
