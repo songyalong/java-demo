@@ -1,4 +1,4 @@
-package com.example.java.javademo.javaagent;
+package com.example.java.javademo.javaagent.bytebuddy;
 
 /**
  * @Author: songyalong
@@ -6,9 +6,8 @@ package com.example.java.javademo.javaagent;
  * @Date: Created in ${time}${date}
  * @Modified By:
  */
-public class Test {
+public class ToStringAgentTest {
     public static void main(String[] args) {
-        System.out.println("yyyyyyy");
-        System.out.println("yyy");
+
     }
 }

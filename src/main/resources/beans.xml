@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd ">
+
+
+    <bean id="book" class="com.example.java.javademo.pojo.Book" p:id="1" p:name="java核心思想"/>
+
+    <bean id="book2" class="com.example.java.javademo.pojo.Book">
+        <constructor-arg index="0" value="123"/>
+        <constructor-arg index="1" value="ddddd" />
+    </bean>
+
+    <bean id="book3" class="com.example.java.javademo.classloader.FactoryBeanTest" p:bookInfo="456,spring核心编程"/>
+
+    <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="customEditors">
+            <map>
+                <entry key="com.example.java.javademo.pojo.Car"
+                       value="com.example.java.javademo.spring.CustomCarEditor" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="boss" class="com.example.java.javademo.pojo.Boss">
+        <property name="car" value="红旗,300,12300" />
+        <property name="name" value="John" />
+    </bean>
+
+    <!-- 引入外部配置文件 -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>classpath:jdbc.property</value>
+        </property>
+    </bean>
+
+    <!--<context:property-placeholder location="classpath:jdbc.property" />-->
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+        <property name="url"><value>${dataSourceUrl}</value></property>
+        <property name="driverClassName"><value>${driverClassName}</value></property>
+        <property name="name"><value>${username}</value></property>
+        <property name="password"><value>${password}</value></property>
+    </bean>
+
+    <bean id="mailSend" class="com.example.java.javademo.spring.event.MailSend" />
+    <bean id="maiSendListener" class="com.example.java.javademo.spring.event.MaiSendListener" />
+
+</beans>
