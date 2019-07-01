@@ -4,9 +4,11 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import sun.misc.BASE64Decoder;
 
 import javax.crypto.*;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -104,16 +106,62 @@ public class AESUtil {
         return key;
     }
 
+    public String encryptCbsNoPadding(String data) throws NoSuchPaddingException, NoSuchAlgorithmException, UnsupportedEncodingException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+        String akey = "16bit";
+        String aiv = "16bit";
+        String cbcNoPadding =  "AES/CBC/NoPadding";
+        // 创建密码器
+        Cipher cipher = Cipher.getInstance(cbcNoPadding);
+        int blockSize = cipher.getBlockSize();
+        System.out.println("blockSize="+blockSize);
+        byte[] bytes = data.getBytes();
+        int length = bytes.length;
+        if(length % blockSize != 0){
+            length = length + (blockSize - (length % blockSize));
+        }
+        byte[] plaintext = new byte[length];
+        System.arraycopy(bytes, 0, plaintext, 0, bytes.length);
+
+        // AES秘钥
+        SecretKeySpec keyspec = new SecretKeySpec(akey.getBytes("utf-8"), "AES");
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(aiv.getBytes("utf-8"));
+
+        // 初始化加密模式的加密器
+        cipher.init(Cipher.ENCRYPT_MODE, keyspec, ivParameterSpec);
+        // 加密
+        byte[] bytes1 = cipher.doFinal(plaintext);
+        return Base64.encodeBase64String(bytes1);
+    }
+
+    public String decryptCbsNoPadding(String data) throws NoSuchPaddingException, NoSuchAlgorithmException, UnsupportedEncodingException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+        String akey = "16bit";
+        String aiv = "16bit";
+        String cbcNoPadding =  "AES/CBC/NoPadding";
+        byte[] bytes = Base64.decodeBase64(data);
+        Cipher instance = Cipher.getInstance(cbcNoPadding);
+        SecretKeySpec secretKeySpec = new SecretKeySpec(akey.getBytes(), "AES");
+
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(aiv.getBytes("utf-8"));
+
+        instance.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
+        byte[] bytes1 = instance.doFinal(bytes);
+
+        return new String(bytes1);
+    }
+
+
+
     public static void main(String[] args) throws Exception {
 
-        String publicKey = "1234567890123456";
+//        String publicKey = "1234567890123456";
+//
+//        String encrypt = encrypt(publicKey, publicKey, CIPHER_NOPADDING);
+//        System.out.println("encrypt = " + encrypt);
+//
+//        String decrypt = decrypt(encrypt, publicKey, CIPHER_NOPADDING);
+//
+//        System.out.println("decrypt = "+ decrypt);
 
-        String encrypt = encrypt(publicKey, publicKey, CIPHER_NOPADDING);
-        System.out.println("encrypt = " + encrypt);
-
-        String decrypt = decrypt(encrypt, publicKey, CIPHER_NOPADDING);
-
-        System.out.println("decrypt = "+ decrypt);
 
 
     }

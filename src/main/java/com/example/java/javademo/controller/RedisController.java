@@ -10,10 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: songyalong
@@ -33,6 +37,13 @@ public class RedisController {
     public String setString(@PathVariable("key") String key, @PathVariable("value") String value){
         stringRedisTemplate.opsForValue().set(key, value);
         return "SUCCESS";
+    }
+
+    @GetMapping(value = "/get/{keys}")
+    public Object getValues(@PathVariable("keys") String keys){
+        String[] split = keys.split(",");
+        List<String> strings = stringRedisTemplate.opsForValue().multiGet(Arrays.asList(split));
+        return strings;
     }
 
     @PostMapping(value = "/set/{key}/{value}/{ttl}/")
@@ -269,6 +280,7 @@ public class RedisController {
             System.out.println(Thread.currentThread().getName() + "正在执行");
         }
     }
+
 
 
 

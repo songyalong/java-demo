@@ -1,7 +1,11 @@
 package com.example.java.javademo.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * @Author: songyalong
@@ -9,12 +13,14 @@ import java.util.Properties;
  * @Date: Created in ${time}${date}
  * @Modified By:
  */
+@RestController
 public class Test {
-    public static void main(String[] args) {
-        Properties properties = System.getProperties();
-        System.out.println(properties);
 
-        Map<String, String> getenv = System.getenv();
-        System.out.println(getenv);
+    @GetMapping(value = "test/")
+    public Object test(){
+        Map<String, Object> data  = new HashMap<>(8);
+        data.put("test", "test");
+        System.out.println(JSONObject.toJSON(data).toString());
+        return data;
     }
 }

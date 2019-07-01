@@ -27,6 +27,8 @@ public class Receive {
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                 String message = new String(body, "UTF-8");
                 System.out.println(message);
+                System.out.println("consumerTag = "+ consumerTag);
+                System.out.println(envelope.toString());
             }
         };
         // 绑定通道和消费者

@@ -18,7 +18,7 @@ public class Rece2 {
         Connection connection = RabbitmqConnectionUtil.getConnection();
         Channel channel = connection.createChannel();
         channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-
+        // 同一时刻，服务器只会向消费者发送1条消息
         channel.basicQos(1);
 
         DefaultConsumer consumer = new DefaultConsumer(channel) {
@@ -33,10 +33,17 @@ public class Rece2 {
                 } finally {
                     System.out.println("done");
                 }
+                // 消费者自动确认
+                /**
+                 * 模式一： 自动确认， 只要消息从队列中取出，无论消费是否成功，都认为消息是成功消费的
+                 * 模式二： 手动确认，消费者从队列中获取消息后，服务器会将消息设置为不可用状态，等待消费者的反馈，如果消费者一直未消费
+                 * 该消息将会一直是不可用状态
+                 */
                 channel.basicAck(envelope.getDeliveryTag(), false);
             }
         };
         boolean ack = false;
+        // 监听队列， false：表示手动返回状态， true：表示自动
         channel.basicConsume(QUEUE_NAME, ack, consumer);
     }
 }

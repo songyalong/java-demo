@@ -5,6 +5,7 @@ import com.example.java.javademo.pojo.Book;
 import com.example.java.javademo.pojo.FormData;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +21,8 @@ import java.util.Map;
  */
 @Api(description = "用户接口")
 @RestController
+@Slf4j
 public class MonitorController {
-
     @Autowired
     private FormDataMapper formDataMapper;
 
@@ -43,9 +44,11 @@ public class MonitorController {
 
     @ApiOperation(value = "测试", notes = "根据用户来测试")
     @RequestMapping(value="/formdata",method= RequestMethod.POST)
-    public void hello(){
+    public Object hello(){
+        log.info("log debug");
         FormData formData = formDataMapper.getById(8926);
         System.out.println(formData);
+        return formData;
     }
 
 

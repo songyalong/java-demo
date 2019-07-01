@@ -22,6 +22,12 @@ public class Receive {
         channel.queueDeclare(QUEUE_NAME, false, false, false,null);
 
         // 绑定交换机
+        /**
+         * queueBind 有三个参数
+         * 参数一： queueName 消息队列名
+         * 参数二： exchengeName 交换机名称
+         * 参数三： bindingKey
+         */
         channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, "");
 
         channel.basicQos(1);

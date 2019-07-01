@@ -29,7 +29,7 @@ public class Send {
         channel.basicQos(prefectCount);
 
         //发布信息
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 100; i++) {
             String message = "hello "+i;
             channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
         }
