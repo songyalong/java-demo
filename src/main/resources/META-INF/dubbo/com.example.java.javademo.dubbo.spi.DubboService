@@ -1,0 +1,2 @@
+aDubboService=com.example.java.javademo.dubbo.spi.ADubboService
+bDubboService=com.example.java.javademo.dubbo.spi.BDubboService
